@@ -93,3 +93,16 @@ resource "aws_route" "private_nat" {
   destination_cidr_block	= "0.0.0.0/0"
   nat_gateway_id		= aws_nat_gateway.nat_gateway.id
 }
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id	= aws_vpc.main.id
+  service_name = "com.amazonaws.ap-northeast-2.s3"
+  route_table_ids = [
+	aws_route_table.private.id,
+	aws_route_table.public.id
+  ]
+
+  tags = {
+    Name = "terraform-101-vpc-endpoint"
+  }
+}
